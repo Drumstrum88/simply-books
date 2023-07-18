@@ -4,20 +4,24 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
-import { deleteSingleAuthor } from '../api/authorData';
+import { deleteSingleAuthor, getAuthors } from '../api/authorData';
 
 function AuthorCard({ authorObj, onUpdate }) {
-  if (!authorObj) {
-    return null;
-  }
-
   const {
-    first_name, last_name, email, firebase_key,
+    first_name, last_name, email, firebaseKey,
   } = authorObj;
 
   const deleteThisAuthor = () => {
-    if (window.confirm(`Delete ${first_name} ${last_name}?`)) {
-      deleteSingleAuthor(firebase_key).then(() => onUpdate());
+    if (window.confirm('Are you sure you want to delete this author?')) {
+      deleteSingleAuthor(authorObj.firebaseKey)
+        .then(() => {
+          if (onUpdate) {
+            onUpdate(getAuthors());
+          }
+        })
+        .catch((error) => {
+          console.error('Error deleting author:', error);
+        });
     }
   };
 
@@ -28,10 +32,12 @@ function AuthorCard({ authorObj, onUpdate }) {
         <Card.Text>
           {email}
         </Card.Text>
-        <Link href={`/author/${firebase_key}`} passHref>
-          <Button variant="primary" className="m-2">VIEW</Button>
+        <Link href={`/authors/${firebaseKey}`} passHref>
+          <Button variant="primary" className="m-2">
+            Author Details
+          </Button>
         </Link>
-        <Link href={`/author/edit/${firebase_key}`} passHref>
+        <Link href={`/authors/edit/${firebaseKey}`} passHref>
           <Button variant="info">EDIT</Button>
         </Link>
         <Button variant="danger" onClick={deleteThisAuthor} className="m-2">
@@ -47,13 +53,14 @@ AuthorCard.propTypes = {
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
-    firebase_key: PropTypes.string,
+    firebaseKey: PropTypes.string,
   }),
-  onUpdate: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func,
 };
 
 AuthorCard.defaultProps = {
   authorObj: null,
+  onUpdate: undefined,
 };
 
 export default AuthorCard;

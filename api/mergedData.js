@@ -1,4 +1,4 @@
-import { getAuthorBooks, getSingleAuthor, deleteSingleAuthor } from './authorData';
+import { getSingleAuthor, deleteSingleAuthor, getAuthorBooks } from './authorData';
 import { getSingleBook, deleteBook } from './bookData';
 
 const viewBookDetails = (bookFirebaseKey) => new Promise((resolve, reject) => {
