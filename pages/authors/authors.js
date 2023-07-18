@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Button } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
-import { getAuthors } from '../../api/authorData';
+import { deleteSingleAuthor, getAuthors } from '../../api/authorData';
 import AuthorCard from '../../components/authorCard';
 
 function Authors() {
@@ -17,6 +17,16 @@ function Authors() {
     getAllTheAuthors();
   }, [getAllTheAuthors]);
 
+  const onDeleteAuthor = (authorId) => {
+    deleteSingleAuthor(authorId)
+      .then(() => {
+        getAllTheAuthors();
+      })
+      .catch((error) => {
+        console.error('Error deleting author:', error);
+      });
+  };
+
   return (
     <div className="text-center my-4">
       <Link passHref href="/authors/new">
@@ -24,7 +34,12 @@ function Authors() {
       </Link>
       <div className="d-flex flex-wrap">
         {authors.map((author) => (
-          <AuthorCard key={author.firebaseKey} authorObj={author} onUpdate={getAllTheAuthors} />
+          <AuthorCard
+            key={author.firebaseKey}
+            authorObj={author}
+            onUpdate={getAllTheAuthors}
+            onDeleteAuthor={onDeleteAuthor}
+          />
         ))}
       </div>
     </div>
