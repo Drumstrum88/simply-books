@@ -16,7 +16,7 @@ function Authors() {
   useEffect(() => {
     getAllTheAuthors();
   }, [getAllTheAuthors]);
-
+  // this is a comment
   return (
     <div className="text-center my-4">
       <Link passHref href="/authors/new">
