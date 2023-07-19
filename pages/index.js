@@ -7,7 +7,6 @@ import { useAuth } from '../utils/context/authContext';
 import BookCard from '../components/BookCard';
 
 function Home() {
-  // TODO: Set a state for books
   const [books, setBooks] = useState([]);
 
   // TODO: Get user ID using useAuth Hook
