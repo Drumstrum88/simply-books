@@ -29,7 +29,7 @@ export default function AuthorForm({ obj }) {
       [name]: value,
     }));
   };
-
+  // adding a comment just for the heck of it
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.firebaseKey) {
