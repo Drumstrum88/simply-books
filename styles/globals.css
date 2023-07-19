@@ -9,3 +9,8 @@ body {
   border-radius: 50%;
   width: 30px;
 }
+
+.user-image {
+  width: 150px;
+  height: auto;
+}
