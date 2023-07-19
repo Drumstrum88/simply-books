@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { getSingleAuthor, deleteSingleAuthor, getAuthorBooks } from './authorData';
 import { getSingleBook, deleteBook } from './bookData';
 
@@ -18,13 +19,13 @@ const viewAuthorDetails = (authorFirebaseKey) => new Promise((resolve, reject) =
     }).catch((error) => reject(error));
 });
 
-const deleteAuthorBooks = (authorId) => new Promise((resolve, reject) => {
-  getAuthorBooks(authorId).then((booksArray) => {
+const deleteAuthorBooks = (author_id) => new Promise((resolve, reject) => {
+  getAuthorBooks(author_id).then((booksArray) => {
     console.warn(booksArray, 'Author Books');
     const deleteBookPromises = booksArray.map((book) => deleteBook(book.firebaseKey));
 
     Promise.all(deleteBookPromises).then(() => {
-      deleteSingleAuthor(authorId).then(resolve);
+      deleteSingleAuthor(author_id).then(resolve);
     });
   }).catch((error) => reject(error));
 });
