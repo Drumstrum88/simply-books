@@ -15,7 +15,7 @@ export default function User() {
 
   return (
     <div className="d-flex flex-column">
-      <img src={user.photoURL} alt={user.displayName} />
+      <img className="user-image" src={user.photoURL} alt={user.displayName} />
       <h1>{user.displayName}</h1>
       <p>{user.email}</p>
       <p>Last Sign-in Time: {lastSignInTime}</p>
