@@ -8,12 +8,12 @@ import { useAuth } from '../../utils/context/authContext';
 import { createAuthor, updateAuthor } from '../../api/authorData';
 
 const initialState = {
-  firstName: '',
-  lastName: '',
+  first_name: '',
+  last_name: '',
   email: '',
 };
 
-function AuthorForm({ obj }) {
+export default function AuthorForm({ obj }) {
   const [formInput, setFormInput] = useState(initialState);
   const router = useRouter();
   const { user } = useAuth();
@@ -36,15 +36,15 @@ function AuthorForm({ obj }) {
       updateAuthor(formInput).then(() => router.push(`/author/${obj.firebaseKey}`));
     } else {
       const payload = { ...formInput, uid: user.uid };
-      createAuthor(payload).then(({ name }) => {
-        const patchPayload = { firebaseKey: name };
+      createAuthor(payload).then((data) => {
+        const { firebaseKey } = data;
+        const patchPayload = { ...payload, firebaseKey };
         updateAuthor(patchPayload).then(() => {
           router.push('/');
         });
       });
     }
   };
-
   return (
     <Form onSubmit={handleSubmit}>
       <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} Author</h2>
@@ -52,8 +52,8 @@ function AuthorForm({ obj }) {
         <Form.Control
           type="text"
           placeholder="Enter first name"
-          name="firstName"
-          value={formInput.firstName}
+          name="first_name"
+          value={formInput.first_name}
           onChange={handleChange}
           required
         />
@@ -62,8 +62,8 @@ function AuthorForm({ obj }) {
         <Form.Control
           type="text"
           placeholder="Enter last name"
-          name="lastName"
-          value={formInput.lastName}
+          name="last_name"
+          value={formInput.last_name}
           onChange={handleChange}
           required
         />
@@ -95,5 +95,3 @@ AuthorForm.propTypes = {
 AuthorForm.defaultProps = {
   obj: initialState,
 };
-
-export default AuthorForm;

@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
-import { deleteSingleAuthor, getAuthors } from '../api/authorData';
+import { deleteSingleAuthor } from '../api/authorData';
+import { deleteAuthorBooks } from '../api/mergedData';
 
 function AuthorCard({ authorObj, onUpdate }) {
   const {
@@ -13,15 +14,7 @@ function AuthorCard({ authorObj, onUpdate }) {
 
   const deleteThisAuthor = () => {
     if (window.confirm('Are you sure you want to delete this author?')) {
-      deleteSingleAuthor(authorObj.firebaseKey)
-        .then(() => {
-          if (onUpdate) {
-            onUpdate(getAuthors());
-          }
-        })
-        .catch((error) => {
-          console.error('Error deleting author:', error);
-        });
+      deleteSingleAuthor(authorObj.firebaseKey).then(deleteAuthorBooks(authorObj.firebaseKey)).then(onUpdate);
     }
   };
 
